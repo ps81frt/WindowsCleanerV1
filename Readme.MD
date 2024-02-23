@@ -4,6 +4,4 @@
 
 # Suppression de chrome avec Winget
 
-'''bash
-winget uninstall Google.Chrome --silent
-'''
+      winget uninstall Google.Chrome --silent
