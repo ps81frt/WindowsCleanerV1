@@ -13,21 +13,33 @@ REG add HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement /v 
 REG add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v "HideFileExt" /t REG_DWORD /d 0 /f 2> nul
 taskkill /f /im explorer.exe & start explorer.exe 2> nul
 
+echo.
+
 echo ======================
 echo Installation de winget
 echo ====================== & echo.
 
 ::installing dependies
+powershell -command Set-ExecutionPolicy Unrestricted -Scope CurrentUser
+Set-ExecutionPolicy Unrestricted 
 $progressPreference = 'silentlyContinue'
-Write-Information "Downloading WinGet and its dependencies..."
+Write-Information "Telechargement de winget et ces dependances..."
 Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
 Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
-Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.7.3/Microsoft.UI.Xaml.2.7.x64.appx -OutFile Microsoft.UI.Xaml.2.7.x64.appx
+Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.8.5/Microsoft.UI.Xaml.2.8.x64.appx -OutFile Microsoft.UI.Xaml.2.8.x64.appx
 Add-AppxPackage Microsoft.VCLibs.x64.14.00.Desktop.appx
 Add-AppxPackage Microsoft.UI.Xaml.2.7.x64.appx
 Add-AppxPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
 
-powershell -command winget uninstall Google.Chrome --silent
+cls & echo
+winget -v
+echo.
 
-:: Reinstallation de chrome
-powershell -command winget install chrome
+::Desinstalation de Google Chrome
+winget uninstall --id Google.Chrome --silent
+
+:: Reinstallation de Google Chrome
+winget install --id Google.Chrome --silent
+
+powershell -command Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+powershell -command Set-ExecutionPolicy RemoteSigned 
